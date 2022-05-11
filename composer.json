@@ -1,0 +1,22 @@
+{
+    "name": "jacksleight/statamic-bonus-routes",
+    "autoload": {
+        "psr-4": {
+            "JackSleight\\StatamicBonusRoutes\\": "src"
+        }
+    },
+    "extra": {
+        "statamic": {
+            "name": "Bonus Routes",
+            "description": ""
+        },
+        "laravel": {
+            "providers": [
+                "JackSleight\\StatamicBonusRoutes\\ServiceProvider"
+            ]
+        }
+    },
+    "require": {
+        "statamic/cms": "^3.3"
+    }
+}
