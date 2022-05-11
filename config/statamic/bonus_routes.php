@@ -2,6 +2,8 @@
 
 return [
 
-    'collections' => [],
+    'refresh_cache' => [
+        'pages',
+    ],
 
 ];
