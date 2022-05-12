@@ -37,10 +37,9 @@ Collection show routes *must* include all parameters that Statamic's standard ro
 
 Here's how you can define bonus collection routes:
 
-{{ noparse }}
 ```php
 // Add an index route
-Route::bonus('collection:blog', '{mount}/{year}', 'blog.archive');
+Route::bonus('collection:blog', '@{mount}/{year}', 'blog.archive');
 
 // Add a show route under the standard route
 Route::bonus('collection:blog', '{mount}/{year}/{slug}/comments', 'blog.comments');
@@ -48,7 +47,6 @@ Route::bonus('collection:blog', '{mount}/{year}/{slug}/comments', 'blog.comments
 // Add a show route mounted to another entry
 Route::bonus('collection:blog', '{mount:entry-id}/{year}/{slug}', 'blog.show');
 ```
-{{ /noparse }}
 
 ### Taxonomy Routes
 
