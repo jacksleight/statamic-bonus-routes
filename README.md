@@ -52,7 +52,7 @@ Route::bonus('collection:blog', '{mount:entry-id}/{year}/{slug}', 'blog.show');
 
 Two types of taxonomy route are supported, show and index. Show routes work in exactly the same way as Statamic's standard routes, they parse the requested term to the view template or 404 if nothing is found. Index routes are for listing and other non-term specific pages.
 
-Term show routes *must* include a `slug` parameter.
+Taxonomy show routes *must* include a `slug` parameter.
 
 Here's how you can define bonus taxonomy routes:
 
