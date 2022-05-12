@@ -33,7 +33,7 @@ You can define bonus routes using the `Route::bonus()` method. These should be a
 
 Two types of collection route are supported, show and index. Show routes work in exactly the same way as Statamic's standard routes, they parse the requested entry to the view template or 404 if nothing is found. Index routes are for listing and other non-entry specific pages.
 
-Show routes *must* include all parameters that Statamic's standard route uses. They can included additonal parameters, and they can be in a different order, but they must all be there.
+Collection show routes *must* include all parameters that Statamic's standard route uses. They can included additonal parameters, and they can be in a different order, but they must all be there.
 
 Here's how you can define bonus collection routes:
 
@@ -52,7 +52,7 @@ Route::bonus('collection:blog', '{mount:entry-id}/{year}/{slug}', 'blog.show');
 
 Two types of taxonomy route are supported, show and index. Show routes work in exactly the same way as Statamic's standard routes, they parse the requested term to the view template or 404 if nothing is found. Index routes are for listing and other non-term specific pages.
 
-Term routes *must* include a `slug` parameter.
+Term show routes *must* include a `slug` parameter.
 
 Here's how you can define bonus taxonomy routes:
 
