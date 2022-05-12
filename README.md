@@ -35,17 +35,17 @@ Two types of collection route are supported, show and index. Show routes work in
 
 Collection show routes *must* include all parameters that Statamic's standard route uses. They can included additonal parameters, and they can be in a different order, but they must all be there.
 
-Here's how you can define bonus collection routes:
+Here's how you can define bonus collection routes (use braces not brackets, I had to change them due to formatting issues):
 
 ```php
 // Add an index route
-{% raw %}Route::bonus('collection:blog', '{mount}/{year}', 'blog.archive');{% endraw %}
+Route::bonus('collection:blog', '(mount)/(year)', 'blog.archive');
 
 // Add a show route under the standard route
-Route::bonus('collection:blog', '{mount}/{year}/{slug}/comments', 'blog.comments');
+Route::bonus('collection:blog', '(mount)/(year)/(slug)/comments', 'blog.comments');
 
 // Add a show route mounted to another entry
-Route::bonus('collection:blog', '{mount:entry-id}/{year}/{slug}', 'blog.show');
+Route::bonus('collection:blog', '(mount:entry-id)/(year)/(slug)', 'blog.show');
 ```
 
 ### Taxonomy Routes
@@ -54,14 +54,14 @@ Two types of taxonomy route are supported, show and index. Show routes work in e
 
 Taxonomy show routes *must* include a `slug` parameter.
 
-Here's how you can define bonus taxonomy routes:
+Here's how you can define bonus taxonomy routes (use braces not brackets, I had to change them due to formatting issues):
 
 ```php
 // Add a show route under the standard route
-Route::bonus('taxonomy:topics', 'topics/{slug}/posts', 'topics.posts');
+Route::bonus('taxonomy:topics', 'topics/(slug)/posts', 'topics.posts');
 
 // Add a show route mounted to an entry
-Route::bonus('taxonomy:topics', '{mount:entry-id}/{slug}', 'topics.show');
+Route::bonus('taxonomy:topics', '(mount:entry-id)/(slug)', 'topics.show');
 ```
 
 ### Linking to Routes
