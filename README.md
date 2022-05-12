@@ -8,7 +8,7 @@
 
 <!-- /statamic:hide -->
 
-> *⚠️ Experimental* This addon is experimental and could change. Make sure you read the Important section below. If you’re testing this out and have any feedback, suggestions or issues please [get in touch](https://github.com/jacksleight/statamic-bonus-routes/issues).
+> **⚠️ Experimental:** This addon is experimental and could change. Make sure you read the Important section below. If you’re testing this out and have any feedback, suggestions or issues please [get in touch](https://github.com/jacksleight/statamic-bonus-routes/issues).
 
 This Statamic addon allows you to easily define additional dynamic collection and taxonomy routes that can be mounted anywhere.
 
