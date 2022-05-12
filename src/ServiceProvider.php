@@ -3,7 +3,7 @@
 namespace JackSleight\StatamicBonusRoutes;
 
 use Illuminate\Routing\Router;
-use JackSleight\StatamicBonusRoutes\Http\Controllers\FrontendController;
+use JackSleight\StatamicBonusRoutes\Http\Controllers\BonusController;
 use JackSleight\StatamicBonusRoutes\Listeners\DataChangeSubscriber;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
@@ -16,15 +16,6 @@ class ServiceProvider extends AddonServiceProvider
     protected $subscribe = [
         DataChangeSubscriber::class,
     ];
-
-    public function register()
-    {
-        parent::register();
-
-        $this->mergeConfigFrom(
-            __DIR__.'/../config/statamic/bonus_routes.php', 'statamic.bonus_routes',
-        );
-    }
 
     public function boot()
     {
@@ -42,8 +33,12 @@ class ServiceProvider extends AddonServiceProvider
             }, $uri);
         };
 
-        Router::macro('bonus', function ($handle, $uri, $view, $data = []) {
-            return $this->bonusCollection($handle, $uri, $view, $data);
+        Router::macro('bonus', function ($type, $uri, $view, $data = []) {
+            $mode = Str::before($type, ':');
+            $handle = Str::after($type, ':');
+            $method = 'bonus'.ucfirst($mode);
+
+            return $this->{$method}($handle, $uri, $view, $data);
         });
 
         Router::macro('bonusCollection', function ($handle, $uri, $view, $data = []) use ($resolveMount) {
@@ -53,7 +48,7 @@ class ServiceProvider extends AddonServiceProvider
             }
             $uri = $resolveMount($uri, $collection->mount()->url());
 
-            return $this->get($uri, [FrontendController::class, 'collection'])
+            return $this->get($uri, [BonusController::class, 'collection'])
                 ->defaults('collection', $handle)
                 ->defaults('view', $view)
                 ->defaults('data', $data);
@@ -66,16 +61,12 @@ class ServiceProvider extends AddonServiceProvider
             }
             $uri = $resolveMount($uri);
 
-            return $this->get($uri, [FrontendController::class, 'taxonomy'])
+            return $this->get($uri, [BonusController::class, 'taxonomy'])
                 ->defaults('taxonomy', $handle)
                 ->defaults('view', $view)
                 ->defaults('data', $data);
         });
 
         parent::boot();
-
-        $this->publishes([
-            __DIR__.'/../config/statamic/bonus_routes.php' => config_path('statamic/bonus_routes.php'),
-        ], 'statamic-bonus-routes-config');
     }
 }

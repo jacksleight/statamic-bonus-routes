@@ -6,34 +6,31 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Statamic\Exceptions\NotFoundHttpException;
 use Statamic\Facades\Antlers;
-use Statamic\Facades\Data;
+use Statamic\Facades\Entry;
 use Statamic\Facades\Site;
+use Statamic\Facades\Term;
 use Statamic\Support\Arr;
-use Statamic\Support\Str;
 use Statamic\View\View;
 
-class FrontendController extends Controller
+class BonusController extends Controller
 {
     public function collection(Request $request)
     {
         $params = $request->route()->parameters();
         $view = Arr::pull($params, 'view');
         $data = Arr::pull($params, 'data');
-        $collection = Arr::pull($params, 'collection');
         $data = array_merge($params, $data);
+        $collection = Arr::pull($params, 'collection');
 
-        $index = ! Arr::hasAny($params, ['id', 'slug']);
-
-        if ($index) {
+        $url = $this->resolveStandardEntryUrl($collection, $params);
+        if ($url === false) {
             return (new View)
                 ->template($view)
                 ->layout(Arr::get($data, 'layout', $collection->layout()))
                 ->with($data);
         }
 
-        $url = $this->resolveStandardUrl($collection, $params);
-        $entry = Data::findByUri($url, Site::current()->handle());
-
+        $entry = Entry::findByUri($url, Site::current()->handle());
         if ($entry) {
             return (new View)
                 ->template($view)
@@ -50,19 +47,18 @@ class FrontendController extends Controller
         $params = $request->route()->parameters();
         $view = Arr::pull($params, 'view');
         $data = Arr::pull($params, 'data');
-        $taxonomy = Arr::pull($params, 'taxonomy');
         $data = array_merge($params, $data);
+        $taxonomy = Arr::pull($params, 'taxonomy');
 
-        $index = ! Arr::hasAny($params, ['id', 'slug']);
-
-        if ($index) {
+        $url = $this->resolveStandardTermUrl($taxonomy, $params);
+        if ($url === false) {
             return (new View)
                 ->template($view)
                 ->layout(Arr::get($data, 'layout', 'layout'))
                 ->with($data);
         }
 
-        $term = $taxonomy->queryTerms()->where('slug', $params['slug'])->first();
+        $term = Term::findByUri($url, Site::current()->handle());
         if ($term) {
             return (new View)
                 ->template($view)
@@ -74,12 +70,16 @@ class FrontendController extends Controller
         throw new NotFoundHttpException;
     }
 
-    protected function resolveStandardUrl($collection, $params)
+    protected function resolveStandardEntryUrl($collection, $params)
     {
+        $params['mount'] = $collection->mount()->url();
+
         $format = $collection->routes()->get('default');
 
-        if (Str::startsWith($format, '{mount}')) {
-            $params['mount'] = $collection->mount()->url();
+        preg_match_all('/{\s*([a-zA-Z0-9_\-]+)/', $format, $match);
+        $required = $match[1];
+        if (! Arr::has($params, $required)) {
+            return false;
         }
 
         $format = preg_replace_callback('/{\s*([a-zA-Z0-9_\-\:\.]+)\s*}/', function ($match) {
@@ -87,5 +87,15 @@ class FrontendController extends Controller
         }, $format);
 
         return (string) Antlers::parse($format, $params);
+    }
+
+    protected function resolveStandardTermUrl($taxonomy, $params)
+    {
+        $required = ['slug'];
+        if (! Arr::has($params, $required)) {
+            return false;
+        }
+
+        return "{$taxonomy->handle()}/{$params['slug']}";
     }
 }
