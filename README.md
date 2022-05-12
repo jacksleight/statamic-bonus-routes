@@ -39,7 +39,7 @@ Here's how you can define bonus collection routes:
 
 ```php
 // Add an index route
-Route::bonus('collection:blog', '\{mount\}/{year}', 'blog.archive');
+Route::bonus('collection:blog', '{{ "mount" }}/{year}', 'blog.archive');
 
 // Add a show route under the standard route
 Route::bonus('collection:blog', '{mount}/{year}/{slug}/comments', 'blog.comments');
