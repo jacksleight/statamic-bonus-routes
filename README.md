@@ -69,7 +69,7 @@ Route::bonus('taxonomy:topics', '(mount:entry-id)/(slug)', 'topics.show');
 Bonus routes are just normal Laravel routes. To link to them you need to give them a name and then use the `route` tag in your templates. To give them names call Laravel's name method after defining your route:
 
 ```php
-Route::bonus('collection:blog', '{mount}/{year}', 'blog.archive')->name('blog.archive');
+Route::bonus('collection:blog', '(mount)/(year)', 'blog.archive')->name('blog.archive');
 ```
 
 Then use the `route` tag in your templates:
