@@ -12,7 +12,7 @@
 
 This Statamic addon allows you to easily define additional dynamic collection and taxonomy routes that can be mounted anywhere. This is useful for things like: 
 
-* Adding a registration page below entry pages in an events collection
+* Adding registration pages below entry pages in an events collection
 * Adding year or month archive pages above entry pages in blog collection
 * Mounting a news collection to different sectors within a site 
 * Customising taxonomy urls
