@@ -64,8 +64,8 @@ Taxonomy show routes *must* include a `slug` parameter.
 These are some example bonus taxonomy routes. Use braces not brackets, I had to change them here due to formatting issues:
 
 ```php
-// Add an index route with a custom URL
-Route::bonus('taxonomy:topics', 'categories/(slug)', 'topics.index');
+// Add a show route with a custom URL
+Route::bonus('taxonomy:topics', 'categories/(slug)', 'topics.show');
 
 // Add a show route under the standard route
 Route::bonus('taxonomy:topics', 'topics/(slug)/posts', 'topics.posts');
