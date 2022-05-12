@@ -17,7 +17,7 @@ This Statamic addon allows you to easily define additional dynamic collection an
 * Mounting a news collection to different sectors within a site 
 * Customising taxonomy urls
 
-You can do all of these with `Route::statamic()`, but this takes care of the dynamic mounting and data fetching for you.
+It’s possible to achieve all of these with `Route::statamic()`, but this takes care of the dynamic mounting and data fetching for you.
 
 ## Installation
 
