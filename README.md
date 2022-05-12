@@ -82,7 +82,7 @@ Then use the `route` tag in your templates:
 
 ### Route Caching
 
-Bonus routes are just normal Laravel routes, which means they’ll be cached when using route caching. Normally this means that changes to your mount entires would not be reflected in your routes. To work around this Bonus Routes will refresh the route cache automatically whenever pages are updated. I’m not sure this is a great solution, but it works for now, better ideas are very welcome. I plan to make this more targeted in future.
+Bonus routes are just normal Laravel routes, which means they’ll be cached when using route caching. Normally this means that changes to your mount entries would not be reflected in your routes. To work around this Bonus Routes will refresh the route cache automatically whenever pages are updated. I’m not sure this is a great solution, but it works for now, better ideas are very welcome. I plan to make this more targeted in future.
 
 ### Route Overriding
 
