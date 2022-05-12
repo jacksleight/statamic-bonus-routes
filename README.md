@@ -68,7 +68,7 @@ These are some example bonus taxonomy routes. Use braces not brackets, I had to 
 Route::bonus('taxonomy:topics', 'categories/(slug)', 'topics.index');
 
 // Add a show route under the standard route
-Route::bonus(‘taxonomy:topics’, ‘topics/(slug)/posts’, ‘topics.posts’);
+Route::bonus('taxonomy:topics', 'topics/(slug)/posts', 'topics.posts');
 
 // Add a show route mounted to an entry
 Route::bonus('taxonomy:topics', '(mount:entry-id)/(slug)', 'topics.show');
