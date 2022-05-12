@@ -13,11 +13,11 @@
 This Statamic addon allows you to easily define additional dynamic collection and taxonomy routes that can be mounted anywhere. This is useful for things like: 
 
 * Adding registration pages below entry pages in an events collection
-* Adding year or month archive pages above entry pages in blog collection
-* Mounting a news collection to different sectors within a site 
+* Adding date based archive pages above entry pages in blog collection
+* Mounting a news collection to different sectors within a site
 * Customising and mounting taxonomy urls
 
-It’s possible to achieve all of these with `Route::statamic()`, but this takes care of the dynamic mounting and data fetching for you.
+It’s possible to achieve all of these with `Route::statamic()`, but this addon takes care of the dynamic mounting and data fetching for you.
 
 ## Installation
 
@@ -42,7 +42,7 @@ Two types of collection route are supported, show and index. Show routes work in
 
 Collection show routes *must* include all parameters that Statamic's standard route uses. They can included additonal parameters, and they can be in a different order, but they must all be there.
 
-Here's how you can define bonus collection routes (use braces not brackets, I had to change them here due to formatting issues):
+These are some example bonus collection routes. Use braces not brackets, I had to change them here due to formatting issues:
 
 ```php
 // Add an index route
@@ -61,7 +61,7 @@ Two types of taxonomy route are supported, show and index. Show routes work in e
 
 Taxonomy show routes *must* include a `slug` parameter.
 
-Here's how you can define bonus taxonomy routes (use braces not brackets, I had to change them here due to formatting issues):
+These are some example bonus taxonomy routes. Use braces not brackets, I had to change them here due to formatting issues:
 
 ```php
 // Add a show route under the standard route
