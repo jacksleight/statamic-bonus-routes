@@ -17,7 +17,7 @@ This Statamic addon simplifies setting up additional collection and taxonomy bas
 * Mounting a filtered news collection to different sections of a site
 * Customising and mounting taxonomy urls
 
-All of this is possible with `Route::statamic()`, this addon just makes it a bit simpler.
+All of this is possible with `Route::statamic()`, this addon just makes it simpler and saves you hard coding the URLs.
 
 ## Installation
 
