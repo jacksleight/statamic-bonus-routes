@@ -38,11 +38,11 @@ You can define bonus routes using the `Route::bonus()` method. These should be a
 
 ### Collection Routes
 
-Two types of collection route are supported, show and index. Show routes work in exactly the same way as Statamic's standard routes, they parse the requested entry to the view template or 404 if nothing is found. Index routes are for listing and other non-entry specific pages.
+Two types of collection route are supported, show and index. Show routes work in exactly the same way as Statamic's standard routes, they parse the requested entry to the view template or 404 if nothing is found. Index routes are for listing and general non-entry specific pages.
 
 Collection show routes *must* include all parameters that Statamic's standard route uses. They can included additonal parameters, and they can be in a different order, but they must all be there.
 
-These are some example bonus collection routes. Use braces not brackets, I had to change them here due to formatting issues:
+These are some example bonus collection routes. *Use braces not brackets*, I had to change them here due to formatting issues:
 
 ```php
 // Add a date based blog archive page
@@ -57,11 +57,11 @@ Route::bonus('collection:blog', '(mount:entry-id)/(year)/(slug)', 'blog.show');
 
 ### Taxonomy Routes
 
-Two types of taxonomy route are supported, show and index. Show routes work in exactly the same way as Statamic's standard routes, they parse the requested term to the view template or 404 if nothing is found. Index routes are for listing and other non-term specific pages.
+Two types of taxonomy route are supported, show and index. Show routes work in exactly the same way as Statamic's standard routes, they parse the requested term to the view template or 404 if nothing is found. Index routes are for listing and general non-term specific pages.
 
 Taxonomy show routes *must* include a `slug` parameter.
 
-These are some example bonus taxonomy routes. Use braces not brackets, I had to change them here due to formatting issues:
+These are some example bonus taxonomy routes. *Use braces not brackets*, I had to change them here due to formatting issues:
 
 ```php
 // Customise a taxonomy's URL
