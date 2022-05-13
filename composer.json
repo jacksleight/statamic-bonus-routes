@@ -8,7 +8,7 @@
     "extra": {
         "statamic": {
             "name": "Bonus Routes",
-            "description": "This Statamic addon allows you to easily define additional dynamic collection and taxonomy routes that can be mounted anywhere."
+            "description": "This Statamic addon simplifies setting up additional collection and taxonomy based routes by handling the dynamic mounting and data retrieval for you."
         },
         "laravel": {
             "providers": [
