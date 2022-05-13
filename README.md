@@ -45,13 +45,13 @@ Collection show routes *must* include all parameters that Statamic's standard ro
 These are some example bonus collection routes. Use braces not brackets, I had to change them here due to formatting issues:
 
 ```php
-// Add an index route
+// Add a date based blog archive page
 Route::bonus('collection:blog', '(mount)/(year)', 'blog.archive');
 
-// Add a show route under the standard route
+// Add a seperate blog post comments page
 Route::bonus('collection:blog', '(mount)/(year)/(slug)/comments', 'blog.comments');
 
-// Add a show route mounted to another entry
+// Mount a blog collection to an additional entry
 Route::bonus('collection:blog', '(mount:entry-id)/(year)/(slug)', 'blog.show');
 ```
 
@@ -64,13 +64,13 @@ Taxonomy show routes *must* include a `slug` parameter.
 These are some example bonus taxonomy routes. Use braces not brackets, I had to change them here due to formatting issues:
 
 ```php
-// Add a show route with a custom URL
+// Customise a taxonomy's URL
 Route::bonus('taxonomy:topics', 'categories/(slug)', 'topics.show');
 
-// Add a show route under the standard route
+// Add a seperate posts page under a taxonomy term
 Route::bonus('taxonomy:topics', 'topics/(slug)/posts', 'topics.posts');
 
-// Add a show route mounted to an entry
+// Mount a taxonomy to an entry
 Route::bonus('taxonomy:topics', '(mount:entry-id)/(slug)', 'topics.show');
 ```
 
