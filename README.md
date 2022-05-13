@@ -13,11 +13,11 @@
 This Statamic addon simplifies setting up additional collection and taxonomy based routes by handling the dynamic mounting and data retrieval for you. This is useful for things like:
 
 * Adding registration pages below entry pages in an events collection
-* Adding date based archive pages above entry pages in blog collection
+* Adding date based archive pages above entry pages in a blog collection
 * Mounting a filtered news collection to different sections of a site
 * Customising and mounting taxonomy urls
 
-All of this is possible with `Route::statamic()`, this addon just makes it simpler and saves you hard coding the URLs.
+All of this is possible by writing your own custom routes and controllers, this addon just makes it simpler and saves you hard coding the URLs.
 
 ## Installation
 
