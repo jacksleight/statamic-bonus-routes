@@ -4,17 +4,19 @@ namespace JackSleight\StatamicBonusRoutes;
 
 use Illuminate\Routing\Router;
 use JackSleight\StatamicBonusRoutes\Http\Controllers\BonusController;
+use JackSleight\StatamicBonusRoutes\Http\Controllers\CP\RouteCacheController;
 use JackSleight\StatamicBonusRoutes\Listeners\DataChangeSubscriber;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Taxonomy;
+use Statamic\Facades\Utility;
 use Statamic\Providers\AddonServiceProvider;
 use Statamic\Support\Str;
 
 class ServiceProvider extends AddonServiceProvider
 {
     protected $subscribe = [
-        DataChangeSubscriber::class,
+        // DataChangeSubscriber::class,
     ];
 
     public function boot()
@@ -68,5 +70,21 @@ class ServiceProvider extends AddonServiceProvider
         });
 
         parent::boot();
+    }
+
+    public function bootAddon()
+    {
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'statamic-bonus-routes');
+
+        Utility::make('route_cache')
+            ->navTitle('Route Cache')
+            ->icon('synchronize')
+            ->title('Route Cache Refresh')
+            ->description('Refresh the route cache after making changes to your mount entries.')
+            ->action([RouteCacheController::class, 'index'])
+            ->routes(function ($router) {
+                $router->get('/refresh', [RouteCacheController::class, 'refresh'])->name('refresh');
+            })
+            ->register();
     }
 }

@@ -14,6 +14,11 @@ use Statamic\View\View;
 
 class BonusController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('statamic.web');
+    }
+    
     public function collection(Request $request)
     {
         $params = $request->route()->parameters();
