@@ -10,7 +10,14 @@
 
 > **⚠️ Experimental:** This addon is experimental and could change. If you’re testing this out and have any feedback, suggestions or issues please [get in touch](https://github.com/jacksleight/statamic-bonus-routes/issues).
 
-This Statamic addon allows you to easily define additional dynamic collection and taxonomy routes that can be mounted anywhere.
+This Statamic addon simplifies setting up additional collection and taxonomy based routes by handling the dynamic mounting and data retrieval for you. This is useful for things like:
+
+* Adding registration pages below entry pages in an events collection
+* Adding date based archive pages above entry pages in a blog collection
+* Mounting a filtered news collection to different sections of a site
+* Customising and mounting taxonomy urls
+
+All of this is possible by writing your own custom routes and controllers, this addon just makes it simpler and saves you hard coding the URLs.
 
 ## Installation
 
@@ -31,36 +38,39 @@ You can define bonus routes using the `Route::bonus()` method. These should be a
 
 ### Collection Routes
 
-Two types of collection route are supported, show and index. Show routes work in exactly the same way as Statamic's standard routes, they parse the requested entry to the view template or 404 if nothing is found. Index routes are for listing and other non-entry specific pages.
+Two types of collection route are supported, show and index. Show routes work in exactly the same way as Statamic's standard routes, they parse the requested entry to the view template or 404 if nothing is found. Index routes are for listing and general non-entry specific pages.
 
 Collection show routes *must* include all parameters that Statamic's standard route uses. They can included additonal parameters, and they can be in a different order, but they must all be there.
 
-Here's how you can define bonus collection routes (use braces not brackets, I had to change them here due to formatting issues):
+These are some example bonus collection routes. *Use braces not brackets*, I had to change them here due to formatting issues:
 
 ```php
-// Add an index route
+// Add a date based blog archive page
 Route::bonus('collection:blog', '(mount)/(year)', 'blog.archive');
 
-// Add a show route under the standard route
+// Add a seperate blog post comments page
 Route::bonus('collection:blog', '(mount)/(year)/(slug)/comments', 'blog.comments');
 
-// Add a show route mounted to another entry
+// Mount a blog collection to an additional entry
 Route::bonus('collection:blog', '(mount:entry-id)/(year)/(slug)', 'blog.show');
 ```
 
 ### Taxonomy Routes
 
-Two types of taxonomy route are supported, show and index. Show routes work in exactly the same way as Statamic's standard routes, they parse the requested term to the view template or 404 if nothing is found. Index routes are for listing and other non-term specific pages.
+Two types of taxonomy route are supported, show and index. Show routes work in exactly the same way as Statamic's standard routes, they parse the requested term to the view template or 404 if nothing is found. Index routes are for listing and general non-term specific pages.
 
 Taxonomy show routes *must* include a `slug` parameter.
 
-Here's how you can define bonus taxonomy routes (use braces not brackets, I had to change them here due to formatting issues):
+These are some example bonus taxonomy routes. *Use braces not brackets*, I had to change them here due to formatting issues:
 
 ```php
-// Add a show route under the standard route
+// Customise a taxonomy's URL
+Route::bonus('taxonomy:topics', 'categories/(slug)', 'topics.show');
+
+// Add a seperate posts page under a taxonomy term
 Route::bonus('taxonomy:topics', 'topics/(slug)/posts', 'topics.posts');
 
-// Add a show route mounted to an entry
+// Mount a taxonomy to an entry
 Route::bonus('taxonomy:topics', '(mount:entry-id)/(slug)', 'topics.show');
 ```
 
@@ -85,3 +95,7 @@ Bonus routes are just normal Laravel routes, which means they’ll be cached whe
 ## Route Overriding
 
 This addon itself does not override, alter or interfere with Statamic’s routing in any way. However, custom Laravel routes do take priority over Statamic routes. If you define a bonus route that’s the same as a Statamic route it will override Statamic. This should be avoided, it’s best to use Statamic’s routing wherever possible.
+
+```php
+Test: {test}
+```
