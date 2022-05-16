@@ -99,5 +99,5 @@ Bonus routes are just normal Laravel routes, which means they’ll be cached whe
 This addon itself does not override, alter or interfere with Statamic’s routing in any way. However, custom Laravel routes do take priority over Statamic routes. If you define a bonus route that’s the same as a Statamic route it will override Statamic. This should be avoided, it’s best to use Statamic’s routing wherever possible.
 
 ```php
-{test}
+Test: {test}
 ```
