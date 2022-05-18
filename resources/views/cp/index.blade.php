@@ -14,7 +14,10 @@
         @if ($routesCached)
             <div class="flex items-center justify-between">
                 <div>Routes are currently cached, click to refresh:</div>
-                <a href="{{ cp_route('utilities.route_cache.refresh') }}" class="btn-primary">{{ __('Refresh Route Cache') }}</a>
+                <form action="{{ cp_route('utilities.route_cache.refresh') }}" method="post">
+                    <button class="btn-primary">{{ __('Refresh Route Cache') }}</button>
+                    @csrf
+                </form>
             </div>
         @else
             <div class="flex items-center">

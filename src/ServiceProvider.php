@@ -83,7 +83,8 @@ class ServiceProvider extends AddonServiceProvider
             ->description('Refresh the route cache after making changes to your mount entries.')
             ->action([RouteCacheController::class, 'index'])
             ->routes(function ($router) {
-                $router->get('/refresh', [RouteCacheController::class, 'refresh'])->name('refresh');
+                $router->post('/refresh', [RouteCacheController::class, 'refresh'])->name('refresh');
+                $router->get('/refresh-success', [RouteCacheController::class, 'refreshSuccess'])->name('refresh_success');
             })
             ->register();
     }

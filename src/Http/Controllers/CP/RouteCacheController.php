@@ -24,8 +24,13 @@ class RouteCacheController extends CpController
             Artisan::call('route:cache');
         }
 
+        return redirect()->route('statamic.cp.utilities.route_cache.refresh_success');
+    }
+
+    public function refreshSuccess(Request $request)
+    {
         Toast::success('Route cache refreshed');
 
-        return redirect()->back();
+        return redirect()->route('statamic.cp.utilities.route_cache');
     }
 }
