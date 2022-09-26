@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Statamic\Exceptions\NotFoundHttpException;
 use Statamic\Facades\Antlers;
+use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Site;
+use Statamic\Facades\Taxonomy;
 use Statamic\Facades\Term;
 use Statamic\Support\Arr;
 use Statamic\View\View;
@@ -18,14 +20,14 @@ class BonusController extends Controller
     {
         $this->middleware('statamic.web');
     }
-    
+
     public function collection(Request $request)
     {
         $params = $request->route()->parameters();
         $view = Arr::pull($params, 'view');
         $data = Arr::pull($params, 'data');
         $data = array_merge($params, $data);
-        $collection = Arr::pull($params, 'collection');
+        $collection = Collection::find(Arr::pull($params, 'collection'));
 
         $url = $this->resolveStandardEntryUrl($collection, $params);
         if ($url === false) {
@@ -53,7 +55,7 @@ class BonusController extends Controller
         $view = Arr::pull($params, 'view');
         $data = Arr::pull($params, 'data');
         $data = array_merge($params, $data);
-        $taxonomy = Arr::pull($params, 'taxonomy');
+        $taxonomy = Taxonomy::find(Arr::pull($params, 'taxonomy'));
 
         $url = $this->resolveStandardTermUrl($taxonomy, $params);
         if ($url === false) {
