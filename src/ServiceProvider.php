@@ -43,7 +43,7 @@ class ServiceProvider extends AddonServiceProvider
             return $this->{$method}($handle, $uri, $view, $data);
         });
 
-        Router::macro('bonusCollection', function ($handle, $uri, $view, $data = []) use ($resolveMount) {
+        Router::macro('bonusCollection', function ($handle, $uri, $target, $data = []) use ($resolveMount) {
             $collection = Collection::findByHandle($handle);
             if (! $collection) {
                 return $this;
@@ -52,11 +52,11 @@ class ServiceProvider extends AddonServiceProvider
 
             return $this->get($uri, [BonusController::class, 'collection'])
                 ->defaults('collection', $handle)
-                ->defaults('view', $view)
+                ->defaults('target', $target)
                 ->defaults('data', $data);
         });
 
-        Router::macro('bonusTaxonomy', function ($handle, $uri, $view, $data = []) use ($resolveMount) {
+        Router::macro('bonusTaxonomy', function ($handle, $uri, $target, $data = []) use ($resolveMount) {
             $taxonomy = Taxonomy::findByHandle($handle);
             if (! $taxonomy) {
                 return $this;
@@ -65,7 +65,7 @@ class ServiceProvider extends AddonServiceProvider
 
             return $this->get($uri, [BonusController::class, 'taxonomy'])
                 ->defaults('taxonomy', $handle)
-                ->defaults('view', $view)
+                ->defaults('target', $target)
                 ->defaults('data', $data);
         });
 
