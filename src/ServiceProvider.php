@@ -12,6 +12,7 @@ use Statamic\Facades\Taxonomy;
 use Statamic\Facades\Utility;
 use Statamic\Providers\AddonServiceProvider;
 use Statamic\Support\Str;
+use Laravel\SerializableClosure\SerializableClosure;
 
 class ServiceProvider extends AddonServiceProvider
 {
@@ -48,11 +49,18 @@ class ServiceProvider extends AddonServiceProvider
             if (! $collection) {
                 return $this;
             }
+
             $uri = $resolveMount($uri, $collection->mount()->url());
+
+            if (is_string($target)) {
+                $target = function ($view) use ($target) {
+                    return $view->template($target);
+                };
+            }
 
             return $this->get($uri, [BonusController::class, 'collection'])
                 ->defaults('collection', $handle)
-                ->defaults('target', $target)
+                ->defaults('target', new SerializableClosure($target))
                 ->defaults('data', $data);
         });
 
@@ -61,11 +69,18 @@ class ServiceProvider extends AddonServiceProvider
             if (! $taxonomy) {
                 return $this;
             }
+
             $uri = $resolveMount($uri);
+
+            if (is_string($target)) {
+                $target = function ($view) use ($target) {
+                    return $view->template($target);
+                };
+            }
 
             return $this->get($uri, [BonusController::class, 'taxonomy'])
                 ->defaults('taxonomy', $handle)
-                ->defaults('target', $target)
+                ->defaults('target', new SerializableClosure($target))
                 ->defaults('data', $data);
         });
 

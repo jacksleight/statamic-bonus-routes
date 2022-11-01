@@ -88,12 +88,8 @@ class BonusController extends Controller
             ->cascadeContent($content)
             ->with($data);
         $params['view'] = $view;
-
-        if (is_string($target)) {
-            return $view->template($target);
-        }
             
-        return app()->call($target, $params);
+        return app()->call($target->getClosure(), $params);
     }
 
     protected function resolveEntryUrl($collection, $params)
