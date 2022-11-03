@@ -25,7 +25,7 @@ class Router
 
     public function bonusCollection()
     {
-        return function($handle, $uri, $target, $data = [])
+        return function($handle, $uri, $view, $data = [])
         {
             $collection = Collection::findByHandle($handle);
             if (! $collection) {
@@ -34,20 +34,20 @@ class Router
     
             $uri = Route::resolveMountUri($uri, $collection->mount()->url());
 
-            if ($target instanceof Closure) {
-                $target = serialize(new SerializableClosure($target));
-            }
+            // if ($view instanceof Closure) {
+            //     $view = serialize(new SerializableClosure($view));
+            // }
     
             return $this->get($uri, [BonusController::class, 'collection'])
                 ->defaults('collection', $handle)
-                ->defaults('target', $target)
+                ->defaults('view', $view)
                 ->defaults('data', $data);
         };
     }
 
     public function bonusTaxonomy()
     {
-        return function($handle, $uri, $target, $data = [])
+        return function($handle, $uri, $view, $data = [])
         {
             $taxonomy = Taxonomy::findByHandle($handle);
             if (! $taxonomy) {
@@ -56,13 +56,13 @@ class Router
     
             $uri = Route::resolveMountUri($uri);
 
-            if ($target instanceof Closure) {
-                $target = serialize(new SerializableClosure($target));
-            }
+            // if ($view instanceof Closure) {
+            //     $view = serialize(new SerializableClosure($view));
+            // }
     
             return $this->get($uri, [BonusController::class, 'taxonomy'])
                 ->defaults('taxonomy', $handle)
-                ->defaults('target', $target)
+                ->defaults('view', $view)
                 ->defaults('data', $data);
         };
     }
