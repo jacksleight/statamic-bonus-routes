@@ -13,6 +13,7 @@ use Statamic\Facades\Site;
 use Statamic\Facades\Taxonomy;
 use Statamic\Facades\Term;
 use Statamic\Support\Arr;
+use Statamic\Support\Str;
 use Statamic\View\View;
 
 class BonusController extends Controller
@@ -26,23 +27,20 @@ class BonusController extends Controller
     {
         $params = $request->route()->parameters();
 
-        $target = Arr::pull($params, 'target');
-        $data = Arr::pull($params, 'data');
-
-        $collection = Collection::find(Arr::pull($params, 'collection'));
+        $collection = Collection::find($params['collection']);
         $params['collection'] = $collection;
 
         $url = $this->resolveEntryUrl($collection, $params);
 
         if ($url === false) {
-            return $this->response($params, $target, $data, $collection);
+            return $this->response($params, $params['target'], $params['data'], $collection);
         }
         
         $entry = Entry::findByUri($url, Site::current()->handle());
         $params['entry'] = $entry;
 
         if ($entry && $entry->published()) {
-            return $this->response($params, $target, $data, $collection, $entry);
+            return $this->response($params, $params['target'], $params['data'], $collection, $entry);
         }
 
         throw new NotFoundHttpException;
@@ -51,23 +49,20 @@ class BonusController extends Controller
     public function taxonomy(Request $request)
     {
         $params = $request->route()->parameters();
-
-        $target = Arr::pull($params, 'target');
-        $data = Arr::pull($params, 'data');
         
-        $taxonomy = Taxonomy::find(Arr::pull($params, 'taxonomy'));
+        $taxonomy = Taxonomy::find($params['taxonomy']);
         $params['taxonomy'] = $taxonomy;
 
         $url = $this->resolveTermUrl($taxonomy, $params);
 
         if ($url === false) {
-            return $this->response($params, $target, $data, $taxonomy);
+            return $this->response($params, $params['target'], $params['data'], $taxonomy);
         }
 
         $term = Term::findByUri($url, Site::current()->handle());
         $params['term'] = $term;
         if ($term && $term->published()) {
-            return $this->response($params, $target, $data, $taxonomy, $term);
+            return $this->response($params, $params['target'], $params['data'], $taxonomy, $term);
         }
 
         throw new NotFoundHttpException;
@@ -88,8 +83,12 @@ class BonusController extends Controller
             ->cascadeContent($content)
             ->with($data);
         $params['view'] = $view;
-            
-        return app()->call($target->getClosure(), $params);
+
+        if (Str::startsWith($target, 'O:47:"Laravel\\SerializableClosure\\SerializableClosure')) {
+            return app()->call(unserialize($target)->getClosure(), $params);
+        }
+        
+        return $view->template($target);
     }
 
     protected function resolveEntryUrl($collection, $params)

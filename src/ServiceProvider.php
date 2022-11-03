@@ -3,86 +3,16 @@
 namespace JackSleight\StatamicBonusRoutes;
 
 use Illuminate\Routing\Router;
-use JackSleight\StatamicBonusRoutes\Http\Controllers\BonusController;
 use JackSleight\StatamicBonusRoutes\Http\Controllers\CP\RouteCacheController;
-use JackSleight\StatamicBonusRoutes\Listeners\DataChangeSubscriber;
-use Statamic\Facades\Collection;
-use Statamic\Facades\Entry;
-use Statamic\Facades\Taxonomy;
 use Statamic\Facades\Utility;
+use JackSleight\StatamicBonusRoutes\Mixins\Router as RouterMixin;
 use Statamic\Providers\AddonServiceProvider;
-use Statamic\Support\Str;
-use Laravel\SerializableClosure\SerializableClosure;
 
 class ServiceProvider extends AddonServiceProvider
 {
-    protected $subscribe = [
-        // DataChangeSubscriber::class,
-    ];
-
     public function boot()
     {
-        $resolveMount = function ($uri, $standard = null) {
-            return preg_replace_callback('/^\{mount(?::([^}]+))?\}/', function ($match) use ($standard) {
-                if (! ($match[1] ?? null)) {
-                    return $standard;
-                }
-                $entry = Entry::find($match[1]);
-                if (! $entry) {
-                    return;
-                }
-
-                return $entry->url();
-            }, $uri);
-        };
-
-        Router::macro('bonus', function ($type, $uri, $view, $data = []) {
-            $mode = Str::before($type, ':');
-            $handle = Str::after($type, ':');
-            $method = 'bonus'.ucfirst($mode);
-
-            return $this->{$method}($handle, $uri, $view, $data);
-        });
-
-        Router::macro('bonusCollection', function ($handle, $uri, $target, $data = []) use ($resolveMount) {
-            $collection = Collection::findByHandle($handle);
-            if (! $collection) {
-                return $this;
-            }
-
-            $uri = $resolveMount($uri, $collection->mount()->url());
-
-            if (is_string($target)) {
-                $target = function ($view) use ($target) {
-                    return $view->template($target);
-                };
-            }
-
-            return $this->get($uri, [BonusController::class, 'collection'])
-                ->defaults('collection', $handle)
-                ->defaults('target', new SerializableClosure($target))
-                ->defaults('data', $data);
-        });
-
-        Router::macro('bonusTaxonomy', function ($handle, $uri, $target, $data = []) use ($resolveMount) {
-            $taxonomy = Taxonomy::findByHandle($handle);
-            if (! $taxonomy) {
-                return $this;
-            }
-
-            $uri = $resolveMount($uri);
-
-            if (is_string($target)) {
-                $target = function ($view) use ($target) {
-                    return $view->template($target);
-                };
-            }
-
-            return $this->get($uri, [BonusController::class, 'taxonomy'])
-                ->defaults('taxonomy', $handle)
-                ->defaults('target', new SerializableClosure($target))
-                ->defaults('data', $data);
-        });
+        Router::mixin(new RouterMixin);
 
         parent::boot();
     }
