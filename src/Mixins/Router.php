@@ -14,54 +14,42 @@ class Router
 {
     public function bonus()
     {
-        return function($type, $uri, $view, $data = []) {
+        $resolveMountUri = function ($uri, $standard = null) {
+            return preg_replace_callback('/^\{mount(?::([^}]+))?\}/', function ($match) use ($standard) {
+                if (! ($match[1] ?? null)) {
+                    return $standard;
+                }
+                $entry = Entry::find($match[1]);
+                if (! $entry) {
+                    return;
+                }
+    
+                return $entry->url();
+            }, $uri);
+        };
+
+        return function($type, $uri, $view = null, $data = []) use ($resolveMountUri) {
             $mode = Str::before($type, ':');
             $handle = Str::after($type, ':');
-            $method = 'bonus'.ucfirst($mode);
-    
-            return $this->{$method}($handle, $uri, $view, $data);
-        };
-    }
 
-    public function bonusCollection()
-    {
-        return function($handle, $uri, $view, $data = [])
-        {
-            $collection = Collection::findByHandle($handle);
-            if (! $collection) {
+            if ($mode === 'collection') {
+                $collection = Collection::findByHandle($handle);
+                if (! $collection) {
+                    return $this;
+                }
+                $uri = $resolveMountUri($uri, $collection->mount()->url());
+            } else if ($mode === 'collection') {
+                $taxonomy = Taxonomy::findByHandle($handle);
+                if (! $taxonomy) {
+                    return $this;
+                }
+                $uri = $resolveMountUri($uri);
+            } else {
                 return $this;
             }
-    
-            $uri = Route::resolveMountUri($uri, $collection->mount()->url());
 
-            // if ($view instanceof Closure) {
-            //     $view = serialize(new SerializableClosure($view));
-            // }
-    
-            return $this->get($uri, [BonusController::class, 'collection'])
-                ->defaults('collection', $handle)
-                ->defaults('view', $view)
-                ->defaults('data', $data);
-        };
-    }
-
-    public function bonusTaxonomy()
-    {
-        return function($handle, $uri, $view, $data = [])
-        {
-            $taxonomy = Taxonomy::findByHandle($handle);
-            if (! $taxonomy) {
-                return $this;
-            }
-    
-            $uri = Route::resolveMountUri($uri);
-
-            // if ($view instanceof Closure) {
-            //     $view = serialize(new SerializableClosure($view));
-            // }
-    
-            return $this->get($uri, [BonusController::class, 'taxonomy'])
-                ->defaults('taxonomy', $handle)
+            return $this->get($uri, [BonusController::class, $mode])
+                ->defaults($mode, $handle)
                 ->defaults('view', $view)
                 ->defaults('data', $data);
         };

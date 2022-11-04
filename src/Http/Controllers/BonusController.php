@@ -28,19 +28,16 @@ class BonusController extends Controller
         $params = $request->route()->parameters();
 
         $collection = Collection::find($params['collection']);
-        $params['collection'] = $collection;
 
         $url = $this->resolveEntryUrl($collection, $params);
 
         if ($url === false) {
-            return $this->response($params, $params['view'], $params['data'], $collection);
+            return $this->response($params, $collection);
         }
         
         $entry = Entry::findByUri($url, Site::current()->handle());
-        $params['entry'] = $entry;
-
         if ($entry && $entry->published()) {
-            return $this->response($params, $params['view'], $params['data'], $collection, $entry);
+            return $this->response($params, $collection, $entry);
         }
 
         throw new NotFoundHttpException;
@@ -51,24 +48,22 @@ class BonusController extends Controller
         $params = $request->route()->parameters();
         
         $taxonomy = Taxonomy::find($params['taxonomy']);
-        $params['taxonomy'] = $taxonomy;
 
         $url = $this->resolveTermUrl($taxonomy, $params);
 
         if ($url === false) {
-            return $this->response($params, $params['view'], $params['data'], $taxonomy);
+            return $this->response($params, $taxonomy);
         }
 
         $term = Term::findByUri($url, Site::current()->handle());
-        $params['term'] = $term;
         if ($term && $term->published()) {
-            return $this->response($params, $params['view'], $params['data'], $taxonomy, $term);
+            return $this->response($params, $taxonomy, $term);
         }
 
         throw new NotFoundHttpException;
     }
 
-    protected function response($params, $view, $data, $type, $content = null)
+    protected function response($params, $type, $content = null)
     {
         $primary = $content ?? $type;
 
@@ -77,18 +72,11 @@ class BonusController extends Controller
             : $primary->template();
         $layout = $primary->layout();
 
-        $view = app(View::class)
-            ->template(Arr::get($data, 'template', $template))
-            ->layout(Arr::get($data, 'layout', $layout))
-            ->cascadeContent($content)
-            ->with($data);
-        $params['view'] = $view;
-
-        // if (Str::startsWith($view, 'O:47:"Laravel\\SerializableClosure\\SerializableClosure')) {
-        //     return app()->call(unserialize($view)->getClosure(), $params);
-        // }
-        
-        return $view->template($view);
+        return app(View::class)
+            ->template($params['view'] ?? $data['template'] ?? $template)
+            ->layout($data['layout'] ?? $layout)
+            ->with($params['data'] ?? [])
+            ->cascadeContent($content);
     }
 
     protected function resolveEntryUrl($collection, $params)
