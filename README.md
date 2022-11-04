@@ -8,8 +8,6 @@
 
 <!-- /statamic:hide -->
 
-> **⚠️ Experimental:** This addon is experimental and could change. If you’re testing this out and have any feedback, suggestions or issues please [get in touch](https://github.com/jacksleight/statamic-bonus-routes/issues).
-
 This Statamic addon simplifies setting up additional collection and taxonomy based routes by handling the dynamic mounting and data retrieval for you. This is useful for things like:
 
 * Adding registration pages below entry pages in an events collection
@@ -42,9 +40,11 @@ Two types of collection route are supported, show and index. Show routes work in
 
 Collection show routes *must* include all parameters that Statamic's standard route uses. They can included additonal parameters, and they can be in a different order, but they must all be there.
 
-These are some example bonus collection routes. *Use braces not brackets*, I had to change them here due to formatting issues:
+These are some example bonus collection routes.
 
 ```php
+// !! Use braces not brackets, I had to change them here due to formatting issues !!
+
 // Add a date based blog archive page
 Route::bonus('collection:blog', '(mount)/(year)', 'blog.archive');
 
@@ -61,9 +61,11 @@ Two types of taxonomy route are supported, show and index. Show routes work in e
 
 Taxonomy show routes *must* include a `slug` parameter.
 
-These are some example bonus taxonomy routes. *Use braces not brackets*, I had to change them here due to formatting issues:
+These are some example bonus taxonomy routes.
 
 ```php
+// !! Use braces not brackets, I had to change them here due to formatting issues !!
+
 // Customise a taxonomy's URL
 Route::bonus('taxonomy:topics', 'categories/(slug)', 'topics.show');
 
