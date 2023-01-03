@@ -92,11 +92,13 @@ Then use the `route` tag in your templates:
 
 ## Route Caching
 
-Bonus routes are just normal Laravel routes, which means they’ll be cached when using route caching. This means that changes to your mount entries will not be reflected in your routes automatically. This addon provides a utility that allows you to refresh the route cache through the control panel, which you can find under `Utilities > Route Cache Refresh`. Alternatively you can refresh the cache on the command line by running `php artisan route:cache`.
+Bonus routes are just normal Laravel routes that will be cached when using route caching. This means that changes to your mount entries may not be reflected in your routes immediately. This addon provides a utility that allows you to refresh the route cache through the control panel, which you can find under `Utilities > Route Cache Refresh`. Alternatively you can refresh the cache on the command line by running `php artisan route:cache`.
 
 ## Route Overriding
 
 This addon itself does not override, alter or interfere with Statamic’s routing in any way. However, custom Laravel routes do take priority over Statamic routes. If you define a bonus route that’s the same as a Statamic route it will override Statamic. This should be avoided, it’s best to use Statamic’s routing wherever possible.
+
+## Ignore This Bit
 
 ```php
 Test: {test}
