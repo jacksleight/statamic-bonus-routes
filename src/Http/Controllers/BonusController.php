@@ -13,7 +13,6 @@ use Statamic\Facades\Site;
 use Statamic\Facades\Taxonomy;
 use Statamic\Facades\Term;
 use Statamic\Support\Arr;
-use Statamic\Support\Str;
 use Statamic\View\View;
 
 class BonusController extends Controller
@@ -29,19 +28,23 @@ class BonusController extends Controller
 
         $collection = Collection::find($params['collection']);
 
+        $data = array_merge(
+            Arr::except($params, ['collection', 'view', 'data']),
+            $params['data'] ?? [],
+        );
+        if ($collection->mount()) {
+            $data['mount'] = $collection;
+        }
+
         $url = $this->resolveEntryUrl($collection, $params);
 
-        if ($collection->mount()) {
-            $params['mount'] = $collection;
+        if ($url === false) {
+            return $this->response($params, $data, $collection);
         }
 
-        if ($url === false) {
-            return $this->response($params, $collection);
-        }
-        
         $entry = Entry::findByUri($url, Site::current()->handle());
         if ($entry && $entry->published()) {
-            return $this->response($params, $collection, $entry);
+            return $this->response($params, $data, $collection, $entry);
         }
 
         throw new NotFoundHttpException;
@@ -50,24 +53,29 @@ class BonusController extends Controller
     public function taxonomy(Request $request)
     {
         $params = $request->route()->parameters();
-        
+
         $taxonomy = Taxonomy::find($params['taxonomy']);
+
+        $data = array_merge(
+            Arr::except($params, ['taxonomy', 'view', 'data']),
+            $params['data'] ?? [],
+        );
 
         $url = $this->resolveTermUrl($taxonomy, $params);
 
         if ($url === false) {
-            return $this->response($params, $taxonomy);
+            return $this->response($params, $data, $taxonomy);
         }
 
         $term = Term::findByUri($url, Site::current()->handle());
         if ($term && $term->published()) {
-            return $this->response($params, $taxonomy, $term);
+            return $this->response($params, $data, $taxonomy, $term);
         }
 
         throw new NotFoundHttpException;
     }
 
-    protected function response($params, $type, $content = null)
+    protected function response($params, $data, $type, $content = null)
     {
         $primary = $content ?? $type;
 
@@ -77,9 +85,9 @@ class BonusController extends Controller
         $layout = $primary->layout();
 
         return app(View::class)
-            ->template($params['view'] ?? $data['template'] ?? $template)
+            ->template($data['template'] ?? $params['view'] ?? $template)
             ->layout($data['layout'] ?? $layout)
-            ->with(array_merge(array_except($params, 'data'), $params['data'] ?? []))
+            ->with($data)
             ->cascadeContent($content);
     }
 
