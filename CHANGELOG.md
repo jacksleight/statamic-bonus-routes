@@ -2,7 +2,9 @@
 
 ## 0.3.0 (28-09-2023)
 
+- [new] Pass route parameters and mount value to templates
 - [fix] Error registering route cache utility
+- [fix] Overriding template and layout params
 - Dropped support for Statamic 3
 
 ## 0.2.0 (02-05-2023)
