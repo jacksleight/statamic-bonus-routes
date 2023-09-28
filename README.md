@@ -43,16 +43,14 @@ Collection show routes *must* include all parameters that Statamic's standard ro
 These are some example bonus collection routes.
 
 ```php
-// !! Use braces not brackets, I had to change them here due to formatting issues !!
-
 // Add a date based blog archive page
-Route::bonus('collection:blog', '(mount)/(year)', 'blog.archive');
+Route::bonus('collection:blog', '{mount}/{year}', 'blog.archive');
 
 // Add a seperate blog post comments page
-Route::bonus('collection:blog', '(mount)/(year)/(slug)/comments', 'blog.comments');
+Route::bonus('collection:blog', '{mount}/{year}/{slug}/comments', 'blog.comments');
 
 // Mount a blog collection to an additional entry
-Route::bonus('collection:blog', '(mount:entry-id)/(year)/(slug)', 'blog.show');
+Route::bonus('collection:blog', '{mount:entry-id}/{year}/{slug}', 'blog.show');
 ```
 
 ### Taxonomy Routes
@@ -64,16 +62,14 @@ Taxonomy show routes *must* include a `slug` parameter.
 These are some example bonus taxonomy routes.
 
 ```php
-// !! Use braces not brackets, I had to change them here due to formatting issues !!
-
 // Customise a taxonomy's URL
-Route::bonus('taxonomy:topics', 'categories/(slug)', 'topics.show');
+Route::bonus('taxonomy:topics', 'categories/{slug}', 'topics.show');
 
 // Add a seperate posts page under a taxonomy term
-Route::bonus('taxonomy:topics', 'topics/(slug)/posts', 'topics.posts');
+Route::bonus('taxonomy:topics', 'topics/{slug}/posts', 'topics.posts');
 
 // Mount a taxonomy to an entry
-Route::bonus('taxonomy:topics', '(mount:entry-id)/(slug)', 'topics.show');
+Route::bonus('taxonomy:topics', '{mount:entry-id}/{slug}', 'topics.show');
 ```
 
 ### Linking to Routes
@@ -81,7 +77,7 @@ Route::bonus('taxonomy:topics', '(mount:entry-id)/(slug)', 'topics.show');
 Bonus routes are just normal Laravel routes. To link to them you need to give them a name and then use the `route` tag in your templates. To give them names call Laravel's name method after defining your route:
 
 ```php
-Route::bonus('collection:blog', '(mount)/(year)', 'blog.archive')->name('blog.archive');
+Route::bonus('collection:blog', '{mount}/{year}', 'blog.archive')->name('blog.archive');
 ```
 
 Then use the `route` tag in your templates:
@@ -97,9 +93,3 @@ Bonus routes are just normal Laravel routes that will be cached when using route
 ## Route Overriding
 
 This addon itself does not override, alter or interfere with Statamic’s routing in any way. However, custom Laravel routes do take priority over Statamic routes. If you define a bonus route that’s the same as a Statamic route it will override Statamic. This should be avoided, it’s best to use Statamic’s routing wherever possible.
-
-## Ignore This Bit
-
-```php
-Test: {test}
-```
