@@ -31,6 +31,10 @@ class BonusController extends Controller
 
         $url = $this->resolveEntryUrl($collection, $params);
 
+        if ($collection->mount()) {
+            $params['mount'] = $collection;
+        }
+
         if ($url === false) {
             return $this->response($params, $collection);
         }
@@ -75,7 +79,7 @@ class BonusController extends Controller
         return app(View::class)
             ->template($params['view'] ?? $data['template'] ?? $template)
             ->layout($data['layout'] ?? $layout)
-            ->with($params['data'] ?? [])
+            ->with(array_merge(array_except($params, 'data'), $params['data'] ?? []))
             ->cascadeContent($content);
     }
 
