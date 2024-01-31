@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.1 (31-01-2024)
+
+- [fix] Allow collections without mount entry by @daun in https://github.com/jacksleight/statamic-bonus-routes/pull/4
+
 ## 0.3.0 (28-09-2023)
 
 - [new] Pass route parameters and mount value to templates
