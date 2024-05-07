@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.1 (2024-05-07)
+
+- Statamic 5 support
+
 ## 0.3.0 (28-09-2023)
 
 - [new] Pass route parameters and mount value to templates
