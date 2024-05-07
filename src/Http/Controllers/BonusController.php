@@ -93,7 +93,7 @@ class BonusController extends Controller
 
     protected function resolveEntryUrl($collection, $params)
     {
-        $params['mount'] = $collection->mount()->url();
+        $params['mount'] = optional($collection->mount())->url();
 
         $format = $collection->routes()->get('default');
 

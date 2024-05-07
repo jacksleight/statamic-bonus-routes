@@ -37,7 +37,7 @@ class Router
                 if (! $collection) {
                     return $this;
                 }
-                $uri = $resolveMountUri($uri, $collection->mount()->url());
+                $uri = $resolveMountUri($uri, optional($collection->mount())->url());
             } else if ($mode === 'taxonomy') {
                 $taxonomy = Taxonomy::findByHandle($handle);
                 if (! $taxonomy) {
