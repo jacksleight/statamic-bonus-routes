@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.3 (2025-09-16)
+
+- Statamic 6 support
+
 ## 0.3.2 (2024-05-07)
 
 - Statamic 5 support
