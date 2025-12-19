@@ -4,6 +4,7 @@ namespace JackSleight\StatamicBonusRoutes\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Str;
 use Statamic\Contracts\Entries\Collection as CollectionContract;
 use Statamic\Exceptions\NotFoundHttpException;
 use Statamic\Facades\Antlers;
@@ -107,7 +108,10 @@ class BonusController extends Controller
             return "{{ {$match[1]} }}";
         }, $format);
 
-        return (string) Antlers::parse($format, $params);
+        $url = (string) Antlers::parse($format, $params);
+        $url = Str::replaceStart('//', '/', $url);
+
+        return $url;
     }
 
     protected function resolveTermUrl($taxonomy, $params)
