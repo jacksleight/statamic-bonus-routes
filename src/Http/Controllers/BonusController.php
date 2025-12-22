@@ -96,7 +96,7 @@ class BonusController extends Controller
     {
         $params['mount'] = optional($collection->mount())->url();
 
-        $format = $collection->routes()->get('default');
+        $format = $collection->routes()->get(Site::current()->handle());
 
         preg_match_all('/{\s*([a-zA-Z0-9_\-]+)/', $format, $match);
         $required = $match[1];
