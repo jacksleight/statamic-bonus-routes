@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.4 (2025-12-22)
+
+* [fix] Strip duplicate leading slashes from urls by @daun
+* [fix] Resolve entry routes for current site by @daun
+
 ## 0.3.3 (2025-09-16)
 
 - Statamic 6 support
